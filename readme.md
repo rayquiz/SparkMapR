@@ -7,8 +7,8 @@ Download, Install and run the MapR sandbox (with Oracle VirtualBox in my case) M
 
 Configure your /etc/hosts to known the ``maprdemo`` host (127.0.0.1)
 * The server name is ``maprdemo``
-* The web manager on [http://maprdemo:8443]() mapr/mapr
-* MapR version is v. 5.1.0.37549.GA
+* The web manager is on [http://maprdemo:8443]() mapr/mapr
+* My MapR current version is v. 5.1.0.37549.GA
 
 ###Usage
 I will try the yarn client mode to connect Spark to the MapR cluster (i don't want to use the spark-submit script).
@@ -25,8 +25,6 @@ We need the following properties :
 
 * Configure the **core-site.xml** in the resources directory (to connect correctly to HDFS with Spark). We nedd the folowwing properties :
   * fs.defaultFS
-
-**_On a surement un bug ici, car mapr préconnise maprfs et pas hdfs comme le fait une distribution CDH._**
 
 * In the maven pom (pom.xml) add the dependency to mapr-fs (see [http://doc.mapr.com/display/MapR/Maven+Artifacts+for+MapR]())
 ```
@@ -91,7 +89,12 @@ sudo -u spark hdfs dfs -ls /user/spark/
   * spark.yarn.jar
   * spark.yarn.am.extraLibraryPath
 
-But how to configure correctly the maprfs URI : somehting like "maprfs://hostname1:7222/mapr/my.cluster.com", see [http://maprdemo:8443/mcs#cldb]()
+Notes:
+ * But how to configure correctly the maprfs URI : somehting like "maprfs://hostname1:7222/mapr/my.cluster.com", see [http://maprdemo:7221/cldb.jsp]()
+ * We can see in file /opt/mapr/conf/cldb.conf (on maprdemo host), than the current port is 7222
+ * In /opt/mapr/conf/mapr-clusters.conf (on maprdemo host) we have the cluster name : demo.mapr.com
+ * We can see my files on maprdemo host : in directory /mapr/demo.mapr.com/user/spark/
+ * MaprFS : Usage see [http://doc.mapr.com/display/MapR/Accessing+MapR-FS+in+Java+Applications]()
 
 * Launch the Test Java application
 

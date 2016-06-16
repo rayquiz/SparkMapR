@@ -1,0 +1,9 @@
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <!--See https://community.mapr.com/thread/7666 ... it's on very old thread ...-->
+        <!--<name>fs.default.name</name>-->
+        <value>maprfs:///</value>
+        <source>core-default.xml</source>
+    </property>
+</configuration>
