@@ -13,6 +13,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -123,9 +124,16 @@
             <id>cloudera</id>
             <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
         </repository>
+
         <repository>
-            <id>mapr</id>
+            <id>mapr-releases</id>
             <url>http://repository.mapr.com/maven/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
     </repositories>
 
@@ -135,6 +143,7 @@
         <!--<spark.version>1.6.0</spark.version>-->
         <spark.version>1.5.2</spark.version>
         <!--<akka-remote_2.10.version>2.3.11</akka-remote_2.10.version>-->
+        <mapr.version>5.1.0-mapr</mapr.version>
     </properties>
 
 
@@ -157,10 +166,16 @@
 
         <!-- MapR -->
         <!--<dependency>-->
-            <!--<groupId>org.apache.hadoop</groupId>-->
-            <!--<artifactId>hadoop-core</artifactId>-->
-            <!--<version>2.5.1-mapr-1410-SNAPSHOT</version>-->
+        <!--<groupId>org.apache.hadoop</groupId>-->
+        <!--<artifactId>hadoop-core</artifactId>-->
+        <!--<version>2.5.1-mapr-1410-SNAPSHOT</version>-->
         <!--</dependency>-->
+
+        <dependency>
+            <groupId>com.mapr.hadoop</groupId>
+            <artifactId>maprfs</artifactId>
+            <version>${mapr.version}</version>
+        </dependency>
 
         <!-- LogBack -->
         <dependency>
