@@ -76,7 +76,7 @@ hadoop fs -fs maprfs://maprdemo -chmod -R 777 /user/spark
 hadoop fs -fs maprfs://maprdemo -ls /user/spark/
 ```
 
-For CDH we run something like :
+_Notes :_ For CDH we run something like :
 ```
 sudo -u spark hdfs dfs -mkdir -p /user/spark
 sudo -u spark hdfs dfs -put /opt/mapr/spark/spark-1.5.2/lib/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar /user/spark/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar
@@ -91,6 +91,7 @@ sudo -u spark hdfs dfs -ls /user/spark/
   * spark.yarn.jar
   * spark.yarn.am.extraLibraryPath
 
+But how to configure correctly the maprfs URI : somehting like "maprfs://hostname1:7222/mapr/my.cluster.com", see [http://maprdemo:8443/mcs#cldb]()
 
 * Launch the Test Java application
 

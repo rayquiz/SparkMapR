@@ -51,9 +51,11 @@ public class Test {
 //                .set("spark.yarn.jar", "hdfs:///user/spark/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar")
 //                .set("spark.yarn.am.extraLibraryPath", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar")
 
-                .set("spark.yarn.dist.files", "maprfs://maprdemo:/tmp/sparkYarn-1.0-SNAPSHOT-worker.jar")
-                .set("spark.yarn.jar", "maprfs://maprdemo:/tmp/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar")
-                .set("spark.yarn.am.extraLibraryPath", "maprfs://maprdemo:/tmp/sparkYarn-1.0-SNAPSHOT-worker.jar")
+                // somehting like "maprfs://hostname1:7222/mapr/my.cluster.com see http://maprdemo:8443/mcs#cldb
+
+                .set("spark.yarn.dist.files", "maprfs://maprdemo:7222/demo.mapr.com/tmp/sparkYarn-1.0-SNAPSHOT-worker.jar")
+                .set("spark.yarn.jar", "maprfs://maprdemo:7222/demo.mapr.comtmp/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar")
+                .set("spark.yarn.am.extraLibraryPath", "maprfs://maprdemo:7222/demo.mapr.com/tmp/sparkYarn-1.0-SNAPSHOT-worker.jar")
 
                 .set("spark.driver.log.level", "INFO")
                 .set("spark.eventLog.dir", "hdfs:///user/spark/")
