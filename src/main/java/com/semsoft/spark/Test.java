@@ -7,16 +7,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Test pour SPARK sur Yarn
- *
- *
+ * <p>
+ * <p>
  * Idées pour débloquer :
- *  - Utiliser SparkSubmit : https://github.com/cloudera/oozie/blob/cdh5.5.0-release/sharelib/spark/src/main/java/org.apache.oozie.action.hadoop/SparkMain.java
- *
+ * - Utiliser SparkSubmit : https://github.com/cloudera/oozie/blob/cdh5.5.0-release/sharelib/spark/src/main/java/org.apache.oozie.action.hadoop/SparkMain.java
+ * <p>
  * Created by breynard on 11/12/15.
  */
 public class Test {
@@ -25,38 +24,8 @@ public class Test {
 
     public static void main(String[] args) {
         LOGGER.info("Démarrage");
-
-        // Configuration du hadoop.home.dir (sur le cluster ou sur mon poste ????)
-        //System.setProperty("hadoop.home.dir", "/opt/cloudera/parcels/CDH/lib/hadoop");
-        //System.setProperty("hadoop.home.dir", "/home/breynard/IdeaProjects/SparkYarn/src/main/resources");
-
-        // Comment configurer le SPARK_LOCAL_IP ???
-        System.setProperty("SPARK_LOCAL_IP", "127.0.0.1");
-
-        // Configuration du user SPARK
-        System.setProperty("HADOOP_USER_NAME", "spark"); // Or Add VM option : -DHADOOP_USER_NAME=spark
-//        System.setProperty("HADOOP_CONF_DIR", "/home/breynard/IdeaProjects/SparkYarn/src/conf/cloudera/yarn-conf");
-//        System.setProperty("YARN_CONF_DIR", "/home/breynard/IdeaProjects/SparkYarn/src/conf/cloudera/yarn-conf");
-        //System.setProperty("hadoop.home.dir", "/user/spark");
-
-
-        // TODO : Autre Option VM : -DMR2_CLASSPATH=/opt/cloudera/parcels/CDH/jars/
-        // TODO : Autre Option VM : -DHADOOP_CLASSPATH=/opt/cloudera/parcels/CDH/jars/
-
-        //System.setProperty("YARN_CONF_DIR", "/home/breynard/aggrego/yarn-conf/");
-        //System.setProperty("MR2_CLASSPATH", "/home/breynard/IdeaProjects/SparkYarn/target/");
-
-
-        // Copie des fichiers dans le classpath ...
         try (JavaSparkContext javaSparkContext = modeMapR()) {
-            LOGGER.info("UI on http://localhost:4040");
             List<String> data = Arrays.asList("a", "b", "c", "d");
-
-            //val file = sc.textFile("hdfs://vagrant-ubuntu-trusty-64:8020/user/spark/aggrego/test.csv")
-
-            //javaSparkContext.parallelize(data).saveAsTextFile("hdfs://vagrant-ubuntu-trusty-64:8020/user/spark/aggrego/test7.csv");
-            //LOGGER.info("----------------\n\n\n\n\n\n\n\n\n\n\n\n\nOK BORIS.");
-
             long collect = javaSparkContext.parallelize(data).count();
             LOGGER.info("----------------\n\n\n\n\n\n\n\n\n\n\n\n\nResult {}.", collect);
 
@@ -67,11 +36,6 @@ public class Test {
     }
 
     private static JavaSparkContext modeMapR() {
-        // Copie dans les ressources de yarn-conf (conf/cloudera/yarn-conf)
-
-        // Changement côté serveur :
-        // yarn.nodemanager.resource.memory-mb à 2500
-
         SparkConf sparkConf = new SparkConf();
         sparkConf.setAppName("Aggrego Test")
                 .setMaster("yarn-client")
@@ -82,168 +46,10 @@ public class Test {
 
                 .set("spark.driver.log.level", "INFO")
                 .set("spark.eventLog.dir", "hdfs:///user/spark/")
-                .set("spark.eventLog.enabled", "true")
-
-        //# sudo -u spark hdfs dfs -mkdir -p /user/spark
-        //# sudo -u spark hdfs dfs -put /opt/cloudera/parcels/CDH/lib/spark/lib/spark-assembly.jar /user/spark/spark-assembly.jar
-        //# sudo -u spark hdfs dfs -put ~/sparkYarn-1.0-SNAPSHOT-worker.jar /user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar
-        //# sudo -u spark hdfs dfs -put ~/sparkYarn-1.0-SNAPSHOT-all.jar /user/spark/sparkYarn-1.0-SNAPSHOT-all.jar
-        //# sudo -u spark hdfs dfs -chmod -R 777 /user/spark
-        //# sudo -u spark hdfs dfs -ls /user/spark/
-
-
-        //.set("spark.yarn.dist.files", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-all.jar")
-//                .set("spark.yarn.dist.files", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar")
-//                .set("spark.yarn.jar", "hdfs:///user/spark/spark-assembly.jar")
-//                .set("spark.yarn.am.extraLibraryPath", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar")
-        ;
+                .set("spark.eventLog.enabled", "true");
 
 
         SparkContext sparkContext = new SparkContext(sparkConf);
         return new JavaSparkContext(sparkContext);
     }
-
-
-    private static JavaSparkContext mode1() {
-        java.util.Map<String, String> environment = new HashMap<String, String>();
-//        environment.put("YARN_CONF_DIR", "/home/breynard/aggrego/yarn-conf/");
-//        environment.put("spark.yarn.application.classpath", "/home/breynard/aggrego/yarn-conf/");
-        JavaSparkContext result = new JavaSparkContext("yarn-client", "Aggrego Test", null, JavaSparkContext.jarOfClass(Test.class), environment);
-
-        //      result.hadoopConfiguration().set("YARN_CONF_DIR", "/home/breynard/aggrego/yarn-conf/");
-//        result.hadoopConfiguration().set("spark.yarn.application.classpath", "/home/breynard/aggrego/yarn-conf/");
-        LOGGER.info("Reload HADOOP Configuration ... ");
-        //result.hadoopConfiguration().reloadConfiguration();
-
-        return result;
-    }
-
-    private static JavaSparkContext modeCDH() {
-        SparkConf sparkConf = new SparkConf();
-
-        //List<String> jars = new ArrayList<>(Arrays.asList(JavaSparkContext.jarOfClass(Test.class)));
-        //List<String> jars = new ArrayList<>();
-        //jars.add("hdfs:///user/spark/spark-assembly.jar");
-        //jars.add("hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar");
-
-        sparkConf.setAppName("Aggrego Test")
-                //.setMaster("yarn-cluster")
-                .setMaster("yarn-client")
-
-                //.setJars(jars.toArray(new String[jars.size()]))
-
-                //.setExecutorEnv("SPARK_LOCAL_IP", "192.168.1.16")
-
-                //# sudo -u hdfs hdfs dfs -mkdir -p /user/spark
-                //# sudo -u hdfs hdfs dfs -put /usr/lib/spark/lib/spark-assembly.jar /user/spark/spark-assembly.jar
-
-                // Copie du fichier dans HDFS via
-                // sudo -u spark hdfs dfs -put /home/vagrant/sparkYarn-1.0-SNAPSHOT-all.jar /user/spark/sparkYarn-1.0-SNAPSHOT-all.jar
-                //.set("spark.yarn.jar", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar,hdfs:///user/spark/spark-assembly.jar")
-
-
-                // JB:
-                .set("spark.files.overwrite", "true")
-
-                .set("spark.yarn.jar", "hdfs:///user/spark/spark-assembly.jar")
-                .set("spark.yarn.am.extraLibraryPath", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar")
-                //.set("spark.yarn.dist.files", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar")
-
-
-//        private static final String EXECUTOR_CLASSPATH = "spark.executor.extraClassPath=";
-//        private static final String DRIVER_CLASSPATH = "spark.driver.extraClassPath=";
-
-                //.set("spark.yarn.jar", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker2.jar")
-                //.set("spark.yarn.jar", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-*.jar")//hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-driver.jar")
-
-                //.set("spark.yarn.am.cores","2")
-
-                // Mode dynamic Allocation
-                .set("spark.dynamicAllocation.enabled", "false")
-                .set("spark.executor.cores", "2")
-                .set("spark.driver.cores", "2")
-                .set("spark.hadoop.cloneConf", "true")
-
-                .set("spark.deploy.defaultCores", "2")
-                .set("spark.cores.max", "2")
-
-
-                .set("spark.dynamicAllocation.initialExecutors", "2")
-                .set("spark.dynamicAllocation.minExecutors", "2")
-
-                .set("spark.executor.instances", "2")
-                .set("spark.cores.max", "2")
-
-
-                //.set("spark.shuffle.service.enabled","true")
-
-                .set("spark.driver.log.level", "INFO")
-                .set("spark.eventLog.dir", "hdfs:///user/spark/")
-                .set("spark.eventLog.enabled", "true")
-
-        //.set("spark.yarn.historyServer.address", "http://vagrant-ubuntu-trusty-64:18080")
-  /*              .set("YARN_CONF_DIR", "/home/breynard/aggrego/yarn-conf/")
-                .set("spark.local.dir", "/home/breynard/aggrego/")
-                .setExecutorEnv("YARN_CONF_DIR", "/home/breynard/aggrego/yarn-conf/")*/
-        ;
-
-
-        SparkContext sparkContext = new SparkContext(sparkConf);
-
-
-        // sparkContext.hadoopConfiguration().reloadConfiguration();
-
-        //sparkContext.schedulerBackend().start();
-        //sparkContext.taskScheduler().start();
-        return new JavaSparkContext(sparkContext);
-    }
-
-    private static JavaSparkContext modeCDHSimple() {
-        // Copie dans les ressources de yarn-conf (conf/cloudera/yarn-conf)
-
-        // Changement côté serveur :
-        // yarn.nodemanager.resource.memory-mb à 2500
-
-        SparkConf sparkConf = new SparkConf();
-        sparkConf.setAppName("Aggrego Test")
-                .setMaster("yarn-client")
-
-                .set("spark.executor.memory", "512M")
-                .set("spark.yarn.maxAppAttempts", "10")
-
-
-                .set("spark.driver.log.level", "INFO")
-                .set("spark.eventLog.dir", "hdfs:///user/spark/")
-                .set("spark.eventLog.enabled", "true")
-
-                //# sudo -u spark hdfs dfs -mkdir -p /user/spark
-                //# sudo -u spark hdfs dfs -put /opt/cloudera/parcels/CDH/lib/spark/lib/spark-assembly.jar /user/spark/spark-assembly.jar
-                //# sudo -u spark hdfs dfs -put ~/sparkYarn-1.0-SNAPSHOT-worker.jar /user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar
-                //# sudo -u spark hdfs dfs -put ~/sparkYarn-1.0-SNAPSHOT-all.jar /user/spark/sparkYarn-1.0-SNAPSHOT-all.jar
-                //# sudo -u spark hdfs dfs -chmod -R 777 /user/spark
-                //# sudo -u spark hdfs dfs -ls /user/spark/
-
-
-                //.set("spark.yarn.dist.files", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-all.jar")
-                .set("spark.yarn.dist.files", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar")
-                .set("spark.yarn.jar", "hdfs:///user/spark/spark-assembly.jar")
-                .set("spark.yarn.am.extraLibraryPath", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar")
-        ;
-
-
-        SparkContext sparkContext = new SparkContext(sparkConf);
-        return new JavaSparkContext(sparkContext);
-    }
-
-    private static JavaSparkContext mode3() {
-        /*Map<String, Set<SplitInfo>> preferredNodeLocationData= new scala.collection.Map<String, Set<SplitInfo>>();
-        Map<String, String> environnment = new scala.collection.Map<String, String>();
-        Seq<String> jars = new scala.collection.Seq<String>();
-        SparkContext sparkContext = new SparkContext("yarn-client", "Aggrego_TEST", null, jars, environnment, preferredNodeLocationData);
-        sparkContext.getConf().setExecutorEnv("YARN_CONF_DIR", "/home/breynard/aggrego/yarn-conf");
-
-        return new JavaSparkContext(sparkContext);*/
-        return null;
-    }
-
 }
