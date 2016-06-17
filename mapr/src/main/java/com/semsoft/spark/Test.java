@@ -11,12 +11,6 @@ import java.util.List;
 
 /**
  * Test pour SPARK sur Yarn
- * <p>
- * <p>
- * Idées pour débloquer :
- * - Utiliser SparkSubmit : https://github.com/cloudera/oozie/blob/cdh5.5.0-release/sharelib/spark/src/main/java/org.apache.oozie.action.hadoop/SparkMain.java
- * <p>
- * Created by breynard on 11/12/15.
  */
 public class Test {
     private static final Logger LOGGER = LoggerFactory.getLogger(Test.class);
