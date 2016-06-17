@@ -20,10 +20,8 @@ CDH 5.7.0 et spark est en version 1.6.0+cdh5.7.0+180
 * Extraire sont contenu dans le répertoire src/main/resources
 * Compiler le projet avec Maven ```mvn clean install```
 * Copie du worker précédemment compilé surle cluster Hadoop et dans HDFS.
-
-* Comme je n'arrive pas à me connecter en SSH sur la sandbox, je fais via hue.
-
-/usr/lib/spark/lib/spark-assembly.jar
+  * Comme je n'arrive pas à me connecter en SSH sur la sandbox, je le fais via hue [http://quickstart.cloudera:8888]() (Rq, ne pas oublier de donner les droits à tout le monde).
+  * Le spark assembly est dans le répertoire (dans la sandbox): ```/usr/lib/spark/lib/spark-assembly.jar```
 ```
 sudo -u spark hdfs dfs -mkdir -p /user/spark
 sudo -u spark hdfs dfs -put /opt/cloudera/parcels/CDH/lib/spark/lib/spark-assembly.jar /user/spark/spark-assembly.jar
