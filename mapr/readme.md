@@ -83,7 +83,9 @@ Notes:
  * But how to configure correctly the maprfs URI : somehting like "maprfs://hostname1:7222/mapr/my.cluster.com", see [http://maprdemo:7221/cldb.jsp]()
  * We can see in file /opt/mapr/conf/cldb.conf (on maprdemo host), than the current port is 7222
  * In /opt/mapr/conf/mapr-clusters.conf (on maprdemo host) we have the cluster name : demo.mapr.com
-   * Donc je configure mes liens maprfs en maprfs://demo.mapr.com/tmp/XXX
+   * So I put my maprfs URI like this : maprfs://demo.mapr.com/tmp/XXX
+   * Copy of file /opt/mapr/conf/mapr-clusters.conf from maprdemo to the current host
+   ``scp -P 2222 mapr@maprdemo:///opt/mapr/conf/mapr-clusters.conf /opt/mapr/conf/mapr-clusters.conf``
  * We can see my files on maprdemo host : in directory /mapr/demo.mapr.com/user/spark/
  * MaprFS : Usage see [http://doc.mapr.com/display/MapR/Accessing+MapR-FS+in+Java+Applications]()
 
