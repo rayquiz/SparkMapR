@@ -7,16 +7,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Test pour SPARK sur Yarn
- *
- *
+ * <p>
+ * <p>
  * Idées pour débloquer :
- *  - Utiliser SparkSubmit : https://github.com/cloudera/oozie/blob/cdh5.5.0-release/sharelib/spark/src/main/java/org.apache.oozie.action.hadoop/SparkMain.java
- *
+ * - Utiliser SparkSubmit : https://github.com/cloudera/oozie/blob/cdh5.5.0-release/sharelib/spark/src/main/java/org.apache.oozie.action.hadoop/SparkMain.java
+ * <p>
  * Created by breynard on 11/12/15.
  */
 public class Test {
@@ -24,6 +23,10 @@ public class Test {
 
     public static void main(String[] args) {
         LOGGER.info("Démarrage");
+        long start = System.currentTimeMillis();
+
+
+        // Configuration du working direcotry à
 
         // Configuration du hadoop.home.dir (sur le cluster ou sur mon poste ????)
         //System.setProperty("hadoop.home.dir", "/opt/cloudera/parcels/CDH/lib/hadoop");
@@ -36,7 +39,14 @@ public class Test {
         System.setProperty("HADOOP_USER_NAME", "cloudera"); // Or Add VM option : -DHADOOP_USER_NAME=spark
 //        System.setProperty("HADOOP_CONF_DIR", "/home/breynard/IdeaProjects/SparkYarn/src/conf/cloudera/yarn-conf");
 //        System.setProperty("YARN_CONF_DIR", "/home/breynard/IdeaProjects/SparkYarn/src/conf/cloudera/yarn-conf");
-        //System.setProperty("hadoop.home.dir", "/user/spark");
+
+        //set HADOOP_CONF_DIR=/home/breynard/IdeaProjects/SparkYarn/cloudera/src/conf
+
+
+        //System.setProperty("HADOOP_CONF_DIR", "/home/breynard/IdeaProjects/SparkYarn/cloudera/src/conf/");
+        //System.setProperty("YARN_CONF_DIR", "/home/breynard/IdeaProjects/SparkYarn/cloudera/src/conf/");
+
+        //System.setProperty("hadoop.home.dir", "/home/breynard/IdeaProjects/SparkYarn/cloudera/src/conf");
 
 
         // TODO : Autre Option VM : -DMR2_CLASSPATH=/opt/cloudera/parcels/CDH/jars/
@@ -45,9 +55,13 @@ public class Test {
         //System.setProperty("YARN_CONF_DIR", "/home/breynard/aggrego/yarn-conf/");
         //System.setProperty("MR2_CLASSPATH", "/home/breynard/IdeaProjects/SparkYarn/target/");
 
+        boolean resultOk = false;
 
+        long startAfterInit = 0;
         // Copie des fichiers dans le classpath ...
         try (JavaSparkContext javaSparkContext = modeCDHSimple()) {
+
+            startAfterInit = System.currentTimeMillis();
             LOGGER.info("UI on http://localhost:4040");
             List<String> data = Arrays.asList("a", "b", "c", "d");
 
@@ -58,10 +72,12 @@ public class Test {
 
             long collect = javaSparkContext.parallelize(data).count();
             LOGGER.info("----------------\n\n\n\n\n\n\n\n\n\n\n\n\nResult {}.", collect);
+            resultOk = collect == data.size();
 
         } catch (Throwable t) {
             LOGGER.error("Error ", t);
         }
+        LOGGER.info("Result {} in Duration {}ms (total {}ms).", resultOk, System.currentTimeMillis() - startAfterInit, System.currentTimeMillis() - start);
         System.exit(0);
     }
 
@@ -93,8 +109,8 @@ public class Test {
                 // JB:
                 .set("spark.files.overwrite", "true")
 
-                .set("spark.yarn.jar", "hdfs:///user/spark/spark-assembly.jar")
-                .set("spark.yarn.am.extraLibraryPath", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar")
+                .set("spark.yarn.jar", "hdfs:///user/cloudera/spark-assembly.jar")
+                .set("spark.yarn.am.extraLibraryPath", "hdfs:///user/cloudera/sparkYarn-1.0-SNAPSHOT-worker.jar")
                 //.set("spark.yarn.dist.files", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar")
 
 
@@ -160,9 +176,10 @@ public class Test {
                 .set("spark.yarn.maxAppAttempts", "10")
 
 
-                .set("spark.driver.log.level", "INFO")
-                .set("spark.eventLog.dir", "hdfs:///user/cloudera/")
-                .set("spark.eventLog.enabled", "true")
+                // Log SPARK
+//                .set("spark.driver.log.level", "INFO")
+//                .set("spark.eventLog.dir", "hdfs:///user/cloudera/")
+//                .set("spark.eventLog.enabled", "true")
 
                 //# sudo -u spark hdfs dfs -mkdir -p /user/spark
                 //# sudo -u spark hdfs dfs -put /opt/cloudera/parcels/CDH/lib/spark/lib/spark-assembly.jar /user/spark/spark-assembly.jar
@@ -173,9 +190,9 @@ public class Test {
 
 
                 //.set("spark.yarn.dist.files", "hdfs:///user/spark/sparkYarn-1.0-SNAPSHOT-all.jar")
-                .set("spark.yarn.dist.files", "hdfs:///user/cloudera/sparkYarnCDH-1.0-SNAPSHOT-worker.jar")
-                .set("spark.yarn.jar", "hdfs:///user/cloudera/spark-assembly.jar")
-                .set("spark.yarn.am.extraLibraryPath", "hdfs:///user/cloudera/sparkYarnCDH-1.0-SNAPSHOT-worker.jar")
+                .set("spark.yarn.dist.files", "hdfs://quickstart.cloudera/user/cloudera/sparkYarnCDH-1.0-SNAPSHOT-worker.jar")
+                .set("spark.yarn.jar", "hdfs://quickstart.cloudera/user/cloudera/spark-assembly.jar")
+                .set("spark.yarn.am.extraLibraryPath", "hdfs://quickstart.cloudera/user/cloudera/sparkYarnCDH-1.0-SNAPSHOT-worker.jar")
         ;
 
 

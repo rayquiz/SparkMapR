@@ -31,3 +31,10 @@ sudo -u spark hdfs dfs -ls /user/spark/
 ```
 
 
+## Résolution des soucis
+
+* Etat des applications : [http://quickstart.cloudera:8088/cluster/apps]()
+* Avoir les logs Yarn : ```yarn logs -applicationId XXX```
+
+
+

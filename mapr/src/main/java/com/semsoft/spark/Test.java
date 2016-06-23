@@ -49,13 +49,14 @@ public class Test {
 
 
                 // maprfs://demo.mapr.com/tmp/sparkYarn-1.0-SNAPSHOT-worker.jar or maprfs://maprdemi:7222/demo.mapr.com/tmp/sparkYarn-1.0-SNAPSHOT-worker.jar
-                .set("spark.yarn.dist.files", "maprfs:///tmp/sparkYarn-1.0-SNAPSHOT-worker.jar")
-                .set("spark.yarn.jar", "maprfs:///tmp/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar")
-                .set("spark.yarn.am.extraLibraryPath", "maprfs:///tmp/sparkYarn-1.0-SNAPSHOT-worker.jar")
+                .set("spark.yarn.dist.files", "maprfs://demo.mapr.com/tmp/sparkYarnMapR-1.0-SNAPSHOT-worker.jar")
+                .set("spark.yarn.jar", "maprfs://demo.mapr.com/tmp/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar")
+                .set("spark.yarn.am.extraLibraryPath", "maprfs://demo.mapr.com/tmp/sparkYarnMapR-1.0-SNAPSHOT-worker.jar");
 
-                .set("spark.driver.log.level", "INFO")
-                .set("spark.eventLog.dir", "hdfs:///user/spark/")
-                .set("spark.eventLog.enabled", "true");
+                // Log Spark
+//                .set("spark.driver.log.level", "INFO")
+//                .set("spark.eventLog.dir", "hdfs:///user/spark/")
+//                .set("spark.eventLog.enabled", "true");
 
 
         SparkContext sparkContext = new SparkContext(sparkConf);

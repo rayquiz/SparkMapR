@@ -29,4 +29,6 @@
         <!--<name>yarn.application.classpath</name>-->
         <!--<value>/opt/mapr/spark/spark-1.1.0-bin-2.4.1-mapr-1408/lib/spark-assembly-1.1.0-hadoop2.4.1-mapr-1408.jar,/opt/mapr/hadoop/hadoop-2.4.1/etc/hadoop,/opt/mapr/hadoop/hadoop-2.4.1/etc/hadoop,/opt/mapr/hadoop/hadoop-2.4.1/etc/hadoop,/opt/mapr/hadoop/hadoop-2.4.1/share/hadoop/common/lib/*,/opt/mapr/hadoop/hadoop-2.4.1/share/hadoop/common/*,/opt/mapr/hadoop/hadoop-2.4.1/share/hadoop/hdfs,/opt/mapr/hadoop/hadoop-2.4.1/share/hadoop/hdfs/lib/*,/opt/mapr/hadoop/hadoop-2.4.1/share/hadoop/hdfs/*,/opt/mapr/hadoop/hadoop-2.4.1/share/hadoop/yarn/lib/*,/opt/mapr/hadoop/hadoop-2.4.1/share/hadoop/yarn/*,/opt/mapr/hadoop/hadoop-2.4.1/share/hadoop/mapreduce/lib/*,/opt/mapr/hadoop/hadoop-2.4.1/share/hadoop/mapreduce/*,/contrib/capacity-scheduler/*.jar,/opt/mapr/hadoop/hadoop-2.4.1/share/hadoop/yarn/*,/opt/mapr/hadoop/hadoop-2.4.1/share/hadoop/yarn/lib/*</value>-->
     <!--</property>-->
+
+
 </configuration>

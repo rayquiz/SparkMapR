@@ -59,28 +59,19 @@ We need the following properties :
 * Copy the worker on the hadoop cluster and put it on HDFS
 ```
 # From the current directory
-#cp target/sparkYarn-1.0-SNAPSHOT-worker.jar /tmp/
-scp -P 2222 target/sparkYarn-1.0-SNAPSHOT-worker.jar mapr@maprdemo:///tmp/
+#cp target/sparkYarnMapR-1.0-SNAPSHOT-worker.jar /tmp/
+scp -P 2222 target/sparkYarnMapR-1.0-SNAPSHOT-worker.jar mapr@maprdemo:///tmp/
 #scp -P 2222 mapr@maprdemo:///opt/mapr/spark/spark-1.5.2/lib/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar /tmp/
 
 ssh mapr@maprdemo -p 2222
 # On the host maprdemo do
-#cp /opt/mapr/spark/spark-1.5.2/lib/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar /tmp/
+cp /opt/mapr/spark/spark-1.5.2/lib/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar /tmp/
 
 hadoop fs -fs maprfs://maprdemo -mkdir -p /user/spark
 hadoop fs -fs maprfs://maprdemo -put /opt/mapr/spark/spark-1.5.2/lib/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar /user/spark/spark-assembly-1.5.2-mapr-1602-hadoop2.7.0-mapr-1602.jar
-hadoop fs -fs maprfs://maprdemo -put /tmp/sparkYarn-1.0-SNAPSHOT-worker.jar /user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar
+hadoop fs -fs maprfs://maprdemo -put /tmp/sparkYarnMapR-1.0-SNAPSHOT-worker.jar /user/spark/sparkYarnMapR-1.0-SNAPSHOT-worker.jar
 hadoop fs -fs maprfs://maprdemo -chmod -R 777 /user/spark
 hadoop fs -fs maprfs://maprdemo -ls /user/spark/
-```
-
-_Notes :_ For CDH we run something like :
-```
-sudo -u spark hdfs dfs -mkdir -p /user/spark
-sudo -u spark hdfs dfs -put /opt/cloudera/parcels/CDH/lib/spark/lib/spark-assembly.jar /user/spark/spark-assembly.jar
-sudo -u spark hdfs dfs -put /tmp/sparkYarn-1.0-SNAPSHOT-worker.jar /user/spark/sparkYarn-1.0-SNAPSHOT-worker.jar
-sudo -u spark hdfs dfs -chmod -R 777 /user/spark
-sudo -u spark hdfs dfs -ls /user/spark/
 ```
 
 * Check the configuration in the Test.java, specially the following parameters for the sparkConfiguration
@@ -92,6 +83,7 @@ Notes:
  * But how to configure correctly the maprfs URI : somehting like "maprfs://hostname1:7222/mapr/my.cluster.com", see [http://maprdemo:7221/cldb.jsp]()
  * We can see in file /opt/mapr/conf/cldb.conf (on maprdemo host), than the current port is 7222
  * In /opt/mapr/conf/mapr-clusters.conf (on maprdemo host) we have the cluster name : demo.mapr.com
+   * Donc je configure mes liens maprfs en maprfs://demo.mapr.com/tmp/XXX
  * We can see my files on maprdemo host : in directory /mapr/demo.mapr.com/user/spark/
  * MaprFS : Usage see [http://doc.mapr.com/display/MapR/Accessing+MapR-FS+in+Java+Applications]()
 
