@@ -46,7 +46,7 @@ public class Launcher {
 				// path to your application's JAR file
 				// required in yarn-cluster mode
 				"--jar", // "local:/hellofresh/Platine/SparkMapRBoris/mapr/target/sparkYarnMapR-1.0-SNAPSHOT-all.jar"
-				"local:/hellofresh/Platine/SparkMapRBoris/mapr/target/sparkYarnMapR-1.0-SNAPSHOT.jar" };
+				"hdfs://mapr-dev/input/sparkYarnMapR-1.0-SNAPSHOT.jar" };
 
 		// create a Hadoop Configuration object
 		Configuration config = new Configuration();
