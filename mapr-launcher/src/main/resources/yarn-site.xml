@@ -1,0 +1,28 @@
+<configuration>
+    <property>
+        <name>yarn.resourcemanager.scheduler.address</name>
+        <value>mapr-dev:8030</value>
+        <source>programatically</source>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.principal</name>
+        <value>mapr</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.resource-tracker.address</name>
+        <value>mapr-dev:8031</value>
+        <source>programatically</source>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.address</name>
+        <value>mapr-dev:8032</value>
+        <source>programatically</source>
+    </property>
+
+    <property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>mapr-dev</value>
+        <source>programatically</source>
+    </property>
+
+</configuration>
